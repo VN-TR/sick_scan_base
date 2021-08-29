@@ -37,43 +37,27 @@ To install sick_scan_base on Windows, follow the steps below:
 
 1. If not yet done, install Visual Studio. Visual Studio 2019 Community or Professional Edition is recommended.
 
-2. If not yet done, install boost and pthread using Visual Studios package manager vcpkg:
-   * Install vcpkg:
-      * Download vcpkg-master.zip from https://github.com/microsoft/vcpkg/archive/master.zip and unzip to `c:\vcpkg`. Alternatively, run "git clone https://github.com/microsoft/vcpkg"
-      * Install vcpkg by running the following commands:
-         ```
-        cd c:/vcpkg
-        .\bootstrap-vcpkg.bat
-        .\vcpkg integrate install
-        ```
-   * Install required packages:
-      ```
-     vcpkg.exe install pthread:x86-windows
-     vcpkg.exe install pthread:x64-windows
-     vcpkg.exe install boost:x64-windows
-     ```
-   * Include vcpkg in your path:
-      ```
-     set PATH=c:\vcpkg\installed\x64-windows\bin;%PATH%
-     ```
+2. If not yet done, download latest boost from https://www.boost.org/users/download/, unzip boost, install boost by running the following commands:
+   
+   ```bash
+   .\bootstrap.bat
+   .\b2
+   ```
+   
+3. If not yet done, download pre-compiled pthread from https://sourceware.org/pthreads-win32/, unzip.
 
-3. Clone repository https://github.com/SICKAG/sick_scan_base:
+4. Clone repository https://github.com/SICKAG/sick_scan_base:
+
    ```
    git clone https://github.com/SICKAG/sick_scan_base.git
    ```
 
-4. Build sick_generic_caller with cmake and Visual Studio 2019:
-   ```
-   cd sick_scan_base
-   set _os=x64
-   set _cmake_string=Visual Studio 16 2019
-   set _msvc=Visual Studio 2019
-   set _cmake_build_dir=build
-   if not exist %_cmake_build_dir% mkdir %_cmake_build_dir%
-   pushd %_cmake_build_dir%
-   cmake -G "%_cmake_string%" ..
-   popd
-   ```
+5. Build sick_generic_caller with CMake-GUI and Visual Studio 2019:
+
+   * set Boost_INCLUDE_DIR, (e.g. D:/libs/boost_1_72_0) 
+   * set Boost_DIR, (e.g. D:/libs/boost_1_72_0/stage/lib/cmake/Boost-1.72.0)
+   * set PTHREADW32_INCLUDE_DIR, (e.g. D:/libs/pthread/include)
+
    Open file `build\sick_scan_base.sln` in Visual Studio and build all targets (shortcut F7).
 
 ### Ubuntu installation
@@ -178,7 +162,7 @@ Run script `run_simu_lms_5xx.bash` in folder `test/scripts` or execute the follo
 python3 ./test/emulator/test_server.py --scandata_file=./test/emulator/scandata/20210302_lms511.pcapng.scandata.txt --scandata_frequency=20.0 --tcp_port=2112 &
 sleep 1
 ./build_x64/sick_generic_caller ./launch/sick_lms_5xx.launch hostname:=127.0.0.1 sw_pll_only_publish:=False &
- ```
+```
 
 Open file `image_viewer.html` in folder `demo` in a browser (f.e. firefox) to view a jpg-image of the current scan.
 
@@ -205,7 +189,7 @@ TiM571
  1. Scanner model name,
  2. Ros node startup log,
  3. Sopas file of your scanner configuration.
-  The instructions at http://sickusablog.com/create-and-download-a-sopas-file/ show how to create the Sopas file.
+    The instructions at http://sickusablog.com/create-and-download-a-sopas-file/ show how to create the Sopas file.
 * In case of application support please use [https://supportportal.sick.com ](https://supportportal.sick.com).
 * Issue Handling: Issues, for which no reply was received from the questioner for more than 7 days,						
   are closed by us because we assume that the user has solved the problem.
@@ -234,7 +218,7 @@ sick_generic_caller gives you an answer like:
 
    ```bash
    ping 192.168.0.1
-   ```  
+   ```
    The result of ping contains a pattern like
    ```bash
     ... Destination Host Unreachable

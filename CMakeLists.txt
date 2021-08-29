@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(sick_scan_base)
 
 set(CMAKE_BUILD_TYPE Debug)
-
+SET(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 macro(dump_all)
 	get_cmake_property(_variableNames VARIABLES)
@@ -19,7 +19,7 @@ endmacro()
 
 if(WIN32)
     FIND_PACKAGE			(Boost REQUIRED)
-    # FIND_PACKAGE            (pthread REQUIRED) # pthread is found via boost
+    FIND_PACKAGE            (pthreadw32 REQUIRED) # pthread is found via boost
     # dump_all()
 endif()
 
@@ -89,8 +89,9 @@ add_executable(sick_generic_caller
 	
 if(WIN32)
     message("### Compiled for Windows")
-    message(STATUS "PTHREAD: " ${PThreads_windows_LIBRARY})
-    target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} ${PThreads_windows_LIBRARY})
+    message(STATUS "PTHREAD: " ${PTHREADW32_LIBRARY})
+    include_directories(${PTHREADW32_INCLUDE_DIR})
+    target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} ${PTHREADW32_LIBRARY})
 else()
     target_link_libraries(sick_generic_caller ${Boost_LIBRARIES} pthread)
 endif()
